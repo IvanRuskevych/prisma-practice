@@ -1,1 +1,1 @@
-export * from './isExistMware';
+export * from './isExistMiddleware';

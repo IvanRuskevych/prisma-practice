@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { prismaClient } from '../prisma/prismaClient';
 
-export const isExistMware = (id: string) => {
+import { prismaClient } from '../prisma/prismaClient';
+import { getModelDelegate } from '../utils';
+
+export const isExistMiddleware = (model: keyof typeof prismaClient, id: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const reqId = req.body[id] || req.params[id];
 
@@ -10,8 +12,8 @@ export const isExistMware = (id: string) => {
     }
 
     try {
-      const record = await prismaClient.post.findUnique({
-        where: { id: reqId },
+      const record = await getModelDelegate(model).findUnique({
+        where: { id: id },
       });
 
       if (!record) {
