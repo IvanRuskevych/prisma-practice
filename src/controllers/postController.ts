@@ -17,6 +17,7 @@ export const createPost = async (req: Request, res: Response, next: NextFunction
 export const getPosts = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const posts = await prismaClient.post.findMany();
+
     res.status(200).json(posts);
   } catch (err) {
     next(err);
@@ -26,9 +27,9 @@ export const getPosts = async (req: Request, res: Response, next: NextFunction) 
 export const deletePost = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const deletedPost = await prismaClient.post.delete({
-      where: { id: req.params.postId },
+      where: { id: req.params.id },
     });
-    console.log('deletePost', deletedPost);
+
     res.status(200).json(deletedPost);
   } catch (err) {
     next(err);
