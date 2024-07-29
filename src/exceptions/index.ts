@@ -1,1 +1,2 @@
-export * from './ApiExceptions';
+export * from './ApiErrors';
+export * from './PrismaErrors';
