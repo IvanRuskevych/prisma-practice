@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { Prisma } from '@prisma/client';
 
+import { CustomError } from '../types';
 import { ApiErrors, PrismaErrors } from '../exceptions';
 
-export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorHandler = (err: unknown, req: Request, res: Response, next: NextFunction) => {
   console.log('Global Error Handler:', err);
 
   // catch prismaClient errors
@@ -13,13 +14,10 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
   }
 
   // catch http errors
-  const status = err?.status ? err.status : 500;
-  const message = err?.message ? err.message : 'Internal server error';
+  if (err instanceof Error) {
+    const status = (err as CustomError).status || 500;
+    const message = err.message || 'Internal server error';
 
-  return res.status(status).json({ message });
-
-  // const status = err.status || 500;
-  // const message = err.message || 'Internal Server Error';
-  //
-  // res.status(status).json({ message });
+    return res.status(status).json({ message });
+  }
 };
