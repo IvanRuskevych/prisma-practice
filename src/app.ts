@@ -1,6 +1,7 @@
 import express from 'express';
 import postsRouter from './routes/postRoutes';
 import { globalErrorHandler, routesErrorHandler } from './middleware';
+import './middleware/softDeletePostsMiddleware';
 
 const app = express();
 
