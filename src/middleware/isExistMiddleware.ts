@@ -2,14 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 
 import { prismaClient } from '../prisma/prismaClient';
 import { getModelDelegate } from '../utils';
-import { ApiExceptions } from '../exceptions';
+import { ApiErrors } from '../exceptions';
 
 export const isExistMiddleware = (model: keyof typeof prismaClient, id: string) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const reqId = req.body[id] || req.params[id];
+    const reqId = req.params[id] || req.body[id];
 
     if (!reqId) {
-      return next(ApiExceptions.BadRequest('ID is required'));
+      return next(ApiErrors.BadRequest('ID is required'));
     }
 
     try {
@@ -18,7 +18,7 @@ export const isExistMiddleware = (model: keyof typeof prismaClient, id: string) 
       });
 
       if (!record) {
-        return next(ApiExceptions.NotFound(`Record with the given id not found`));
+        return next(ApiErrors.NotFound(`Record with the given id not found`));
       }
 
       req.body.record = record;

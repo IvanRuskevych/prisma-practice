@@ -1,8 +1,9 @@
 import express from 'express';
 import postsRouter from './routes/postRoutes';
 import { globalErrorHandler, routesErrorHandler } from './middleware';
-import './middleware/softDeletePostsMiddleware';
 
+import './middleware/softDeletePostsMiddleware';
+import './exceptions/PrismaErrors';
 const app = express();
 
 app.use(express.json());
